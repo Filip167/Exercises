@@ -42,58 +42,65 @@
 
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <script>
-    $(document).ready(function() {
-      let sortAlphabetically = true;
 
-      function addMovie() {
-        const title = $('#title').val();
-        const rating = $('#rating').val();
+$(document).ready(function() {
+  let sortAlphabetically = true;
 
-        if (title.length < 2 || isNaN(rating) || rating < 0 || rating > 10) {
-          alert('Invalid input! Title should have at least 2 characters, and rating should be between 0 and 10.');
-          return;
-        }
+  function addMovie() {
+    const title = $('#title').val();
+    const rating = $('#rating').val();
 
-        const movieItem = $('<div class="movie-item">').text(`Title: ${title}, Rating: ${rating}`);
-        const removeBtn = $('<button class="remove-btn">Remove</button>');
+    if (title.length < 2 || isNaN(rating) || rating < 0 || rating > 10) {
+      alert('Invalid input! Title should have at least 2 characters, and rating should be between 0 and 10.');
+      return;
+    }
 
-        removeBtn.on('click', function() {
-          movieItem.remove();
-        });
+    const movieItem = $('<div class="movie-item">').text(`Title: ${title}, Rating: ${rating}`);
+    const removeBtn = $('<button class="remove-btn">Remove</button>');
 
-        movieItem.append(removeBtn);
-        $('#moviesList').append(movieItem);
-
-        $('#title').val('');
-        $('#rating').val('');
-        sortMovies();
-      }
-
-      $('#submitBtn').on('click', addMovie);
-
-      $('#sortTitle').on('click', function() {
-        sortAlphabetically = true;
-        sortMovies();
-      });
-
-      $('#sortRating').on('click', function() {
-        sortAlphabetically = false;
-        sortMovies();
-      });
-
-      function sortMovies() {
-        const movies = $('.movie-item');
-
-        movies.sort(function(a, b) {
-          const aText = sortAlphabetically ? $(a).text().toLowerCase() : $(a).text().match(/\d+/)[0];
-          const bText = sortAlphabetically ? $(b).text().toLowerCase() : $(b).text().match(/\d+/)[0];
-
-          return sortAlphabetically ? aText.localeCompare(bText) : bText - aText;
-        });
-
-        $('#moviesList').empty().append(movies);
-      }
+    removeBtn.on('click', function() {
+      movieItem.remove();
     });
+
+    movieItem.append(removeBtn);
+    $('#moviesList').append(movieItem);
+
+    $('#title').val('');
+    $('#rating').val('');
+    sortMovies();
+  }
+
+  $('#submitBtn').on('click', addMovie);
+
+  $('#sortTitle').on('click', function() {
+    sortAlphabetically = true;
+    sortMovies();
+  });
+
+  $('#sortRating').on('click', function() {
+    sortAlphabetically = false;
+    sortMovies();
+  });
+
+  function sortMovies() {
+    const movies = $('.movie-item');
+
+    movies.sort(function(a, b) {
+      const aText = sortAlphabetically ? $(a).text().toLowerCase() : $(a).text().match(/\d+/)[0];
+      const bText = sortAlphabetically ? $(b).text().toLowerCase() : $(b).text().match(/\d+/)[0];
+
+      return sortAlphabetically ? aText.localeCompare(bText) : bText - aText;
+    });
+
+    $('#moviesList').empty().append(movies);
+  } 
+
+  $('#moviesList').on('click', '.remove-btn', function() {
+    $(this).closest('.movie-item').remove();
+  });
+});
+
+    
   </script>
 </body>
 </html>
