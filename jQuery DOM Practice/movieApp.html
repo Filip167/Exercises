@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Movies App</title>
+  <style>
+    body {
+      background-color: lightblue;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #movieForm {
+      margin-bottom: 20px;
+    }
+
+    .movie-item {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Movies App</h1>
+
+  <form id="movieForm">
+    <label for="title">Title:</label>
+    <input type="text" id="title" required minlength="2">
+
+    <label for="rating">Rating (0-10):</label>
+    <input type="number" id="rating" required min="0" max="10">
+
+    <button type="button" id="submitBtn">Add Movie</button>
+  </form>
+
+  <button type="button" id="sortTitle">Sort by Title</button>
+  <button type="button" id="sortRating">Sort by Rating</button>
+
+  <div id="moviesList">
+    
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script>
+    $(document).ready(function() {
+      let sortAlphabetically = true;
+
+      function addMovie() {
+        const title = $('#title').val();
+        const rating = $('#rating').val();
+
+        if (title.length < 2 || isNaN(rating) || rating < 0 || rating > 10) {
+          alert('Invalid input! Title should have at least 2 characters, and rating should be between 0 and 10.');
+          return;
+        }
+
+        const movieItem = $('<div class="movie-item">').text(`Title: ${title}, Rating: ${rating}`);
+        const removeBtn = $('<button class="remove-btn">Remove</button>');
+
+        removeBtn.on('click', function() {
+          movieItem.remove();
+        });
+
+        movieItem.append(removeBtn);
+        $('#moviesList').append(movieItem);
+
+        $('#title').val('');
+        $('#rating').val('');
+        sortMovies();
+      }
+
+      $('#submitBtn').on('click', addMovie);
+
+      $('#sortTitle').on('click', function() {
+        sortAlphabetically = true;
+        sortMovies();
+      });
+
+      $('#sortRating').on('click', function() {
+        sortAlphabetically = false;
+        sortMovies();
+      });
+
+      function sortMovies() {
+        const movies = $('.movie-item');
+
+        movies.sort(function(a, b) {
+          const aText = sortAlphabetically ? $(a).text().toLowerCase() : $(a).text().match(/\d+/)[0];
+          const bText = sortAlphabetically ? $(b).text().toLowerCase() : $(b).text().match(/\d+/)[0];
+
+          return sortAlphabetically ? aText.localeCompare(bText) : bText - aText;
+        });
+
+        $('#moviesList').empty().append(movies);
+      }
+    });
+  </script>
+</body>
+</html>
