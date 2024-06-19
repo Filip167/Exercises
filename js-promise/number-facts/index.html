@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Number Facts</title>
+  <style>
+    body {
+      background-color: lightblue;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    #facts {
+      text-align: center;
+    }
+    .fact {
+      background-color: white;
+      border: 1px solid black;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #000;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="facts">
+    <button id="get-facts">Get Number Facts</button>
+    <div id="facts-container"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
