@@ -1,28 +1,37 @@
+/** BizTime express application. */
+
+
 const express = require("express");
-const app = express();
+
+const ExpressError = require("./expressError")
 const companiesRoutes = require("./routes/companies");
 const invoicesRoutes = require("./routes/invoices");
 
+const app = express();
 
-app.use(express.json()); 
-app.use("/companies", companiesRoutes); 
 
-// 404 handler for undefined routes
-app.use(function(req, res, next) {
-  const err = new Error("Not Found");
-  err.status = 404;
-  next(err);
+app.use(express.json());
+app.use("/companies", companiesRoutes);
+app.use("/invoices", invoicesRoutes);
+
+
+/** 404 handler */
+
+app.use(function (req, res, next) {
+  const err = new ExpressError("Not Found", 404);
+  return next(err);
 });
 
-// General error handler
+/** general error handler */
+
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
+
   return res.json({
-    error: {
-      message: err.message,
-      status: err.status || 500
-    },
+    error: err,
+    message: err.message
   });
 });
+
 
 module.exports = app;
